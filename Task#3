@@ -1,0 +1,67 @@
+class Company {
+  final int id;
+  String companyName;
+  String industry;
+
+  Company({required this.id, required this.companyName, required this.industry});
+}
+
+abstract class CompanyRepository {
+  void createCompany(Company company);
+  Company? getCompanyById(int id);
+  List<Company> getAllCompanies();
+  void updateCompany(int id, Company updatedCompany);
+  void deleteCompany(int id);
+}
+
+class DatabaseCompanyRepository implements CompanyRepository {
+  final Map<int, Company> _companies = {};
+
+  void createCompany(Company company) {
+    _companies[company.id] = company;
+  }
+
+  Company? getCompanyById(int id) {
+    return _companies[id];
+  }
+
+  List<Company> getAllCompanies() {
+    return _companies.values.toList();
+  }
+
+  void updateCompany(int id, Company updatedCompany) {
+    if (_companies.containsKey(id)) {
+      _companies[id] = updatedCompany;
+    } else {
+      throw Exception('Company with id $id not found');
+    }
+  }
+
+  void deleteCompany(int id) {
+    _companies.remove(id);
+  }
+}
+
+void main() {
+  CompanyRepository companyRepository = DatabaseCompanyRepository();
+
+  Company newCompany = Company(id: 1, companyName: 'Tech Inc.', industry: 'Information Technology');
+  companyRepository.createCompany(newCompany);
+
+  Company? retrievedCompany = companyRepository.getCompanyById(1);
+  print(retrievedCompany); 
+
+  List<Company> allCompanies = companyRepository.getAllCompanies();
+  print(allCompanies);
+
+  Company updatedCompany = Company(id: 1, companyName: 'Tech Solutions', industry: 'Software Development');
+  companyRepository.updateCompany(1, updatedCompany);
+
+  companyRepository.deleteCompany(1);
+}
+_________________________________________________________________________________________________________________________________________________
+
+Для абстрактной базы данных можно использовать шаблон проектирования Repository:
+1)Обеспечение согласованности данных.
+2)Изоляция доступа к данным.
+3)Централизация логики доступа к данным.
