@@ -1,0 +1,64 @@
+abstract class Document {
+  void save(String fileName);
+}
+
+class PDFDocument implements Document {
+  void save(String fileName) {
+    print('Сохранение документа в формате PDF: $fileName.pdf');
+  }
+}
+
+class HTMLDocument implements Document {
+  void save(String fileName) {
+    print('Сохранение документа в формате HTML: $fileName.html');
+  }
+}
+
+class JSONDocument implements Document {
+  void save(String fileName) {
+    print('Сохранение документа в формате JSON: $fileName.json');
+  }
+}
+
+abstract class DocumentFactory {
+  Document createDocument();
+}
+
+class PDFDocumentFactory implements DocumentFactory {
+  Document createDocument() {
+    return PDFDocument();
+  }
+}
+
+class HTMLDocumentFactory implements DocumentFactory {
+  Document createDocument() {
+    return HTMLDocument();
+  }
+}
+
+class JSONDocumentFactory implements DocumentFactory {
+  Document createDocument() {
+    return JSONDocument();
+  }
+}
+
+void main() {
+  DocumentFactory pdfFactory = PDFDocumentFactory();
+  Document pdfDocument = pdfFactory.createDocument();
+  pdfDocument.save('example');
+
+  DocumentFactory htmlFactory = HTMLDocumentFactory();
+  Document htmlDocument = htmlFactory.createDocument();
+  htmlDocument.save('example');
+
+  DocumentFactory jsonFactory = JSONDocumentFactory();
+  Document jsonDocument = jsonFactory.createDocument();
+  jsonDocument.save('example');
+}
+_____________________________________________________________________
+
+Explanation:
+Для создания различных форматов документов (PDF, HTML, JSON) можно использовать шаблон проектирования Abstract Factory:
+1)Обеспечение совместимости объектов.
+2)Изоляция создания объектов.
+3)Группировка взаимосвязанных объектов.
