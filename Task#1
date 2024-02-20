@@ -1,0 +1,22 @@
+class Logger {
+  static final Logger _instance = Logger._internal();
+  Logger._internal();
+  factory Logger() => _instance;
+  void log(String message) {
+    DateTime now = DateTime.now();
+    print('$now: $message');
+  }
+}
+
+void main() {
+  Logger logger = Logger();
+  logger.log('Старт приложения');
+  logger.log('Завершение приложения');
+}
+_________________________________________________________
+
+Explanation:
+Для задачи журналирования действий в приложении хорошо подходит шаблон проектирования Singleton:
+1)Гарантированный единственный экземпляр.
+2)Изоляция логики журналирования.
+3)Глобальный доступ.
