@@ -1,0 +1,62 @@
+abstract class AuthStrategy {
+  void login(String username, String password);
+  bool isAuthenticated();
+  void logout();
+}
+
+class DefaultAuthStrategy implements AuthStrategy {
+  bool _isLoggedIn = false;
+  String? _currentUser;
+
+  void login(String username, String password) {
+    _isLoggedIn = true;
+    _currentUser = username;
+    print('$username успешно вошел в систему.');
+  }
+
+  bool isAuthenticated() {
+    return _isLoggedIn;
+  }
+
+  void logout() {
+    _isLoggedIn = false;
+    _currentUser = null;
+    print('Пользователь успешно вышел из системы.');
+  }
+}
+
+class AuthManager {
+  AuthStrategy _authStrategy;
+
+  AuthManager(this._authStrategy);
+
+  void login(String username, String password) {
+    _authStrategy.login(username, password);
+  }
+
+  bool isAuthenticated() {
+    return _authStrategy.isAuthenticated();
+  }
+
+  void logout() {
+    _authStrategy.logout();
+  }
+}
+
+void main() {
+  AuthManager authManager = AuthManager(DefaultAuthStrategy());
+
+  print('Пользователь авторизован: ${authManager.isAuthenticated()}');
+
+  authManager.login('user123', 'password123');
+  print('Пользователь авторизован: ${authManager.isAuthenticated()}');
+
+  authManager.logout();
+  print('Пользователь авторизован: ${authManager.isAuthenticated()}');
+}
+________________________________________________________________________________________________________________________________________
+
+Для работы с авторизацией в приложении можно использовать шаблон Strategy:
+1)Расширяемость.
+2)Разделение ответственностей.
+3)Гибкость конфигурации
